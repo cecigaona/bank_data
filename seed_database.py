@@ -2,7 +2,7 @@ import csv
 import mysql.connector
 
 # CSV filename
-csv_filename = 'cleaned_users.csv'
+csv_filename = 'transactions.csv'
 
 # MySQL database connection parameters
 db_config = {
@@ -26,14 +26,14 @@ with open(csv_filename, newline='', encoding='utf-8') as csvfile:
 
     # Build the CREATE TABLE query.
     columns_definition = ', '.join([f"`{col}` TEXT" for col in header])
-    create_table_query = f"CREATE TABLE IF NOT EXISTS users ({columns_definition});"
+    create_table_query = f"CREATE TABLE IF NOT EXISTS transactions ({columns_definition});"
     cursor.execute(create_table_query)
-    print("Table 'users' created with columns:", header)
+    print("Table 'transactions' created with columns:", header)
 
     # Prepare the INSERT query with parameter placeholders
     placeholders = ', '.join(['%s'] * len(header))
     columns_names = ', '.join([f"`{col}`" for col in header])
-    insert_query = f"INSERT INTO users ({columns_names}) VALUES ({placeholders});"
+    insert_query = f"INSERT INTO transactions ({columns_names}) VALUES ({placeholders});"
 
     # Insert each CSV row into the 'users' table
     for row in csvreader:
