@@ -46,3 +46,13 @@ FROM transactions
 GROUP BY range_start, range_end
 ORDER BY range_start;
 
+/*cantidad de tarjetas de crédito que tienen las personas en promedio por grupo de edad*/
+SELECT 
+    FLOOR(Age / 5) * 5 AS age_group_start,
+    FLOOR(Age / 5) * 5 + 4 AS age_group_end,
+    COUNT(*) AS total_people,
+    ROUND(AVG(Num_Credit_Card)) AS avg_credit_cards
+FROM users
+WHERE Age IS NOT NULL AND Num_Credit_Card IS NOT NULL
+GROUP BY age_group_start, age_group_end
+ORDER BY age_group_start;
