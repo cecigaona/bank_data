@@ -41,7 +41,7 @@ with open(csv_filename, newline='', encoding='utf-8') as csvfile:
 
     # Commit the transaction to save the changes
     conn.commit()
-    print("CSV data has been inserted into the 'users' table.")
+    print("CSV data has been inserted into the 'transactions' table.")
 
 # Clean up and close the connection
 cursor.close()
