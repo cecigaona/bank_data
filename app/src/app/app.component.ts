@@ -1,5 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import {Chart} from 'chart.js/auto';
+import { SqlService } from './sql.service';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +10,25 @@ import {Chart} from 'chart.js/auto';
 export class AppComponent implements AfterViewInit{
   title = 'app';
 
-  ngAfterViewInit(){
+  constructor(private sql:SqlService){
 
+  }
+
+  
+
+  ngAfterViewInit(){
+    this.sql.query('SELECT * FROM test').subscribe({
+      next: (response) => {
+        console.log('Response data:', response);
+      },
+      error: (error) => {
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('Request completed');
+      }
+    });
+    
     const data = [
       { year: 2010, count: 10 },
       { year: 2011, count: 20 },
