@@ -11,7 +11,7 @@ class Item(BaseModel):
     query: str
 
 # Database connection URL using SQLAlchemy
-DATABASE_URL = f"mysql+pymysql://{os.getenv('DB_USER', 'admin')}:{os.getenv('DB_PASSWORD', 'admin')}@{os.getenv('DB_HOST', 'localhost')}/{os.getenv('DB_NAME', 'bank')}"
+DATABASE_URL = f"mysql+pymysql://{os.getenv('DB_USER', 'admin')}:{os.getenv('DB_PASSWORD', 'admin')}@{os.getenv('DB_HOST', 'mysql_db')}/{os.getenv('DB_NAME', 'bank')}"
 
 # Create FastAPI app
 app = FastAPI()
@@ -49,7 +49,6 @@ def test():
             result = conn.execute(text("SHOW tables;"))
             data = [row._asdict() for row in result]
         return data
-        return {"tables": data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
