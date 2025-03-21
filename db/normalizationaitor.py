@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 # Verificar si el archivo existe
-csv_path = "./train.csv"
+csv_path = "/train.csv"
 if not os.path.exists(csv_path):
     print(f"Error: No se encontró el archivo '{csv_path}'")
     exit()
