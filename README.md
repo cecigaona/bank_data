@@ -2,7 +2,8 @@ Proyecto de base de datos avanzada donde se hace un dashboard del analisis de lo
 
 ### To run the **db** and the **backend**
 - Run the following command on root the FIRST TIME: ```docker-compose up --build```
-- Every other time, run: ```docker-compose up -d```
+- Every other time, run: ```docker-compose up```
+- Add the ```-d``` flag at the end if you want to run it in the background
 - ! To take down: ```docker-compose down```
 
 ### To run the **frontend**

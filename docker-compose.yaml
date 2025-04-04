@@ -12,7 +12,6 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-
   backend:
     build: .
     container_name: back
@@ -24,7 +23,6 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/app/backend  # Only mount backend for local changes
-
+      - ./:/app  # Mount the entire project directory
 volumes:
   db_data:
