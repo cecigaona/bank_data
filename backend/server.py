@@ -11,10 +11,12 @@ class Item(BaseModel):
     query: str
 
 # Database connection URL using SQLAlchemy
-DATABASE_URL = f"mysql+pymysql://{os.getenv('DB_USER', 'admin')}:{os.getenv('DB_PASSWORD', 'admin')}@{os.getenv('DB_HOST', 'mysql_db')}/{os.getenv('DB_NAME', 'bank')}"
-
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL == None:
+    print(">> Failed trying to fetch DATABASE_URL")
+else:
 # Create FastAPI app
-app = FastAPI()
+    app = FastAPI()
 
 # Allow CORS for Angular frontend
 app.add_middleware(
