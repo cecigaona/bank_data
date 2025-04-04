@@ -8,19 +8,17 @@ ENV API_RUN_HOST=0.0.0.0
 # Set the working directory
 WORKDIR /app
 
-# Copy only necessary files
-COPY backend/ /app/backend/
-COPY requirements.txt /app/
+# Copy requirements file for initial build
+COPY requirements.txt .
 
 # Install system dependencies
 RUN apk add --no-cache gcc musl-dev linux-headers mariadb-connector-c-dev libffi-dev openssl-dev
 
-
 # Install Python dependencies
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose the API port
 EXPOSE 8000
 
 # Start FastAPI using Uvicorn
-CMD ["fastapi","run","./backend/server.py"]
+CMD ["uvicorn", "backend.server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
