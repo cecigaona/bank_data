@@ -2,8 +2,8 @@ import csv
 from collections import defaultdict, Counter
 
 # Filenames
-input_file = "cleaned_users.csv"  # Your original CSV
-output_file = "cleaned_users2.csv"  # The new CSV with one registry per user
+input_file = "transactions.csv"  # Your original CSV
+output_file = "cleaned_transactions2.csv"  # The new CSV with one registry per user
 
 with open(input_file, newline='') as csvfile:
     reader = csv.reader(csvfile)
@@ -12,18 +12,20 @@ with open(input_file, newline='') as csvfile:
 # Clean empty or invalid rows
 cleaned_rows = []
 for row in rows:
+    for i in range(4, len(row)):
+        row[i] = row[i].replace("_", "")
     if any(field.strip() == "" for field in row):  # Remove empty fields
         continue
-    if any(field.strip() in {"_", "_______"} for field in row):  # Remove invalid placeholders
-        continue
-    try:
+    #if any(field.strip() in {"_","__", "_______"} for field in row):  # Remove invalid placeholders
+        #continue
+    #try:
         age = int(row[2])
         if age < 18 or age > 100:
             continue
-    except Exception as e:
-        continue
-    if any(field == "_" for i, field in enumerate(row) if i not in {0, 5}):  # "_" only allowed in columns 0 and 5
-        continue
+    #except Exception as e:
+        #continue
+    #if any(field == "_" for i, field in enumerate(row) if i not in {0, 4}):  # "_" only allowed in columns 0 and 5
+        #continue
     cleaned_rows.append(row)
 
 user_rows = defaultdict(list)

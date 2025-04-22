@@ -56,3 +56,9 @@ FROM users
 WHERE Age IS NOT NULL AND Num_Credit_Card IS NOT NULL
 GROUP BY age_group_start, age_group_end
 ORDER BY age_group_start;
+
+/* Obtener el procentaje de usuarios con deuda no pagada arriba de cierto threshold*/
+SELECT 
+    (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM users)) AS perc_users
+FROM users 
+WHERE Outstanding_Debt > 500;
