@@ -12,7 +12,7 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./db/import:/docker-entrypoint-initdb.d #Importa el sql
+      - ./db/import:/docker-entrypoint-initdb.d
   backend:
     build: .
     container_name: back
@@ -24,6 +24,6 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./:/app  # Mount the entire project directory
+      - ./:/app
 volumes:
   db_data:
