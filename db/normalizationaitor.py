@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 # Verificar si el archivo existe
-csv_path = "./train.csv"
+csv_path = "/Users/ceciliagaona/Documents/CUARTO_SEMESTRE/BASES/archive/db/train.csv"
 if not os.path.exists(csv_path):
     print(f"Error: No se encontró el archivo '{csv_path}'")
     exit()
@@ -13,12 +13,8 @@ full_csv = pd.read_csv(csv_path)
 
 # Esquema de las tablas
 scheme = {
-    "users": ["Customer_ID", "Name", "Age", "SSN", "Occupation", "Annual_Income",
-              "Num_Bank_Accounts", "Num_Credit_Card", "Interest_Rate", "Num_Credit_Inquiries",
-              "Credit_Mix", "Outstanding_Debt", "Total_EMI_per_month"],
-    
     "transactions": ["ID", "Customer_ID", "Month", "Monthly_Inhand_Salary",
-                     "Num_of_Loan", "Type_of_Loan", "Delay_from_due_date", "Num_of_Delayed_Payment",
+                     "Num_of_Loan", "Delay_from_due_date", "Num_of_Delayed_Payment",
                      "Changed_Credit_Limit", "Credit_Utilization_Ratio", "Credit_History_Age",
                      "Payment_of_Min_Amount", "Amount_invested_monthly", "Payment_Behaviour",
                      "Monthly_Balance", "Credit_Score"]
