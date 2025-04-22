@@ -18,19 +18,32 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const query = 'SELECT Credit_Score, COUNT(*) * 100.0 / (SELECT COUNT(*) FROM transactions) AS percentage FROM transactions GROUP BY Credit_Score;'
 
-    let data_credit: any[] = []
+    const colorPalette:string[] = [
+      'rgba(110, 215, 220, 0.75)', 
+      'rgba(110, 200, 220, 0.75)', 
+      'rgba(110, 185, 220, 0.75)',
+      'rgba(110, 170, 220, 0.75)',
+      'rgba(110, 155, 220, 0.75)'
+    ]
+
+    // -- CHART 1 --
+    let query = '\
+    SELECT Credit_Score, COUNT(*) * 100.0 / (SELECT COUNT(*) FROM transactions) AS percentage \
+    FROM transactions \
+    GROUP BY Credit_Score;'
+
+    let dataFromResponse: any[] = []
     this.sql.query(query).subscribe({
       next: (response) => {
         console.log('Response data:', response);
-        data_credit = response
+        dataFromResponse = response
 
         const data = {
-          labels: data_credit.map(row => row.Credit_Score),
+          labels: dataFromResponse.map(row => row.Credit_Score),
           datasets: [{
-            data: data_credit.map(row => row.percentage),
-            backgroundColor: ['rgba(110, 217, 221, 0.75)', 'rgba(110, 195, 221, 0.75)', 'rgba(110, 177, 221, 0.75)'],
+            data: dataFromResponse.map(row => row.percentage),
+            backgroundColor: colorPalette,
           }]
         };
 
@@ -67,6 +80,7 @@ export class AppComponent implements AfterViewInit {
         console.log('Request completed');
       }
     });
+    // --------------------
 
   }
 
