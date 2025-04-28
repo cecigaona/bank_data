@@ -62,3 +62,11 @@ SELECT
     (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM users)) AS perc_users
 FROM users 
 WHERE Outstanding_Debt > 500;
+
+/*Obtener el top 5 de ocupaciones con mayor tasa de interes*/
+SELECT Occupation, AVG(Interest_Rate) AS Avg_Interest
+FROM users
+WHERE Interest_Rate IS NOT NULL
+GROUP BY Occupation
+ORDER BY Avg_Interest DESC
+LIMIT 5;
