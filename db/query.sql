@@ -1,36 +1,12 @@
 /*type of loan quantity*/
-SELECT 'Credit-Builder Loan' AS LoanType, COUNT(*) AS Frequency
-FROM transactions
-WHERE Type_of_Loan LIKE '%Credit-Builder Loan%'
-UNION ALL
-SELECT 'Personal Loan', COUNT(*)
-FROM transactions
-WHERE Type_of_Loan LIKE '%Personal Loan%'
-UNION ALL
-SELECT 'Debt Consolidation Loan', COUNT(*)
-FROM transactions
-WHERE Type_of_Loan LIKE '%Debt Consolidation Loan%'
-UNION ALL
-SELECT 'Student Loan', COUNT(*)
-FROM transactions
-WHERE Type_of_Loan LIKE '%Student Loan%'
-UNION ALL
-SELECT 'Payday Loan', COUNT(*)
-FROM transactions
-WHERE Type_of_Loan LIKE '%Payday Loan%'
-UNION ALL
-SELECT 'Mortgage Loan', COUNT(*)
-FROM transactions
-WHERE Type_of_Loan LIKE '%Mortgage Loan%'
-UNION ALL
-SELECT 'Auto Loan', COUNT(*)
-FROM transactions
-WHERE Type_of_Loan LIKE '%Auto Loan%'
-UNION ALL
-SELECT 'Home Equity Loan', COUNT(*)
-FROM transactions
-WHERE Type_of_Loan LIKE '%Home Equity Loan%'
+SELECT type_loan.Type AS LoanType, COUNT(*) AS Frequency
+FROM transactions, users, user_loan, type_loan
+WHERE transactions.Customer_ID = users.Customer_ID
+  AND users.Customer_ID = user_loan.ID_client
+  AND user_loan.ID_loan = type_loan.ID
+GROUP BY type_loan.Type
 ORDER BY Frequency DESC;
+
 
 /*porcentajes de credit score*/
 SELECT Credit_Score, COUNT(*) * 100.0 / (SELECT COUNT(*) FROM transactions) AS percentage
@@ -70,3 +46,31 @@ WHERE Interest_Rate IS NOT NULL
 GROUP BY Occupation
 ORDER BY Avg_Interest DESC
 LIMIT 5;
+
+/*Obtener el total de usuarios con retrasos de pago y el porcentaje que representa*/
+SELECT 
+  (SELECT COUNT(DISTINCT Customer_ID) FROM users) AS Total_Usuarios,
+
+  (SELECT COUNT(DISTINCT Customer_ID)
+   FROM transactions
+   WHERE CAST(Num_of_Delayed_Payment AS UNSIGNED) > 0 
+      OR CAST(Delay_from_due_date AS UNSIGNED) > 0
+  ) AS Con_Retrasos,
+
+  ROUND(
+    (SELECT COUNT(DISTINCT Customer_ID)
+     FROM transactions
+     WHERE CAST(Num_of_Delayed_Payment AS UNSIGNED) > 0 
+        OR CAST(Delay_from_due_date AS UNSIGNED) > 0) * 100.0 /
+    (SELECT COUNT(DISTINCT Customer_ID) FROM users), 2
+  ) AS Porcentaje_Retrasos;
+
+  /*Promedio en meses del historial crediticio */
+  SELECT 
+  ROUND(AVG(
+    (CAST(SUBSTRING_INDEX(Credit_History_Age, ' Years', 1) AS UNSIGNED) * 12) +
+    (CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(Credit_History_Age, 'and ', -1), ' Month', 1) AS UNSIGNED))
+  ), 2) AS Promedio_Meses_Historial
+FROM transactions
+WHERE Credit_History_Age IS NOT NULL
+  AND Credit_History_Age LIKE '%Year%' AND Credit_History_Age LIKE '%Month%';
